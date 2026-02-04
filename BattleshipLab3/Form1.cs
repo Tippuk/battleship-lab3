@@ -127,7 +127,10 @@ public partial class Form1 : Form
         if (sender is not Button button)
             return;
 
-        var (x, y) = ((int x, int y))button.Tag;
+        if (button.Tag is not ValueTuple<int, int> coords)
+            return;
+
+        var (x, y) = coords;
 
         await _session.SendAsync(new NetworkMessage
         {
