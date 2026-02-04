@@ -136,6 +136,8 @@ public partial class Form1 : Form
             Y = y
         });
 
+        _gameState.Logger.Add("Me", x, y, "Shot");
+
         _gameState.SetPhase(GamePhase.EnemyTurn);
         UpdateStatusText();
     }
@@ -156,6 +158,13 @@ public partial class Form1 : Form
 
         if (_gameState.Phase != GamePhase.Placement)
             return;
+
+        if (!_gameState.MyBoard.HasShips())
+        {
+            MessageBox.Show(this, "Сначала расставьте корабли.", "Морской бой",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
 
         await _session.SendAsync(new NetworkMessage
         {
@@ -245,11 +254,14 @@ public partial class Form1 : Form
             Outcome = result.Outcome.ToString()
         });
 
+        _gameState.Logger.Add("Enemy", x, y, result.Outcome.ToString());
+
         if (_gameState.MyBoard.AllShipsSunk())
         {
             _gameState.FinishGame();
             lblStatus.Text = "Поражение";
             enemyGrid.Enabled = false;
+            _gameState.Logger.SaveToFile();
             return;
         }
 
@@ -310,6 +322,7 @@ public partial class Form1 : Form
             _gameState.FinishGame();
             enemyGrid.Enabled = false;
             lblStatus.Text = "Победа";
+            _gameState.Logger.SaveToFile();
             return;
         }
 
@@ -367,5 +380,10 @@ public partial class Form1 : Form
             GamePhase.GameOver => "Игра окончена",
             _ => lblStatus.Text
         };
+    }
+
+    private void Form1_FormClosing(object? sender, FormClosingEventArgs e)
+    {
+        _session?.Stop();
     }
 }

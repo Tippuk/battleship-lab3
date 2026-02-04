@@ -15,6 +15,7 @@ public class GameState
 {
     public Board MyBoard { get; } = new();
     public Board EnemyBoard { get; } = new();
+    public GameLogger Logger { get; } = new();
 
     public GamePhase Phase { get; private set; } = GamePhase.WaitingForConnection;
     public bool IsHost { get; }

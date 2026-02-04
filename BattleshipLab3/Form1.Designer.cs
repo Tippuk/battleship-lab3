@@ -207,6 +207,7 @@ partial class Form1
         Controls.Add(playerGrid);
         Name = "Form1";
         Text = "Морской бой";
+        FormClosing += Form1_FormClosing;
         Load += Form1_Load;
         ((System.ComponentModel.ISupportInitialize)numPort).EndInit();
         ResumeLayout(false);

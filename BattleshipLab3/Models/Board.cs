@@ -79,6 +79,11 @@ public class Board
         _ships.Clear();
     }
 
+    public bool HasShips()
+    {
+        return _ships.Count > 0;
+    }
+
     public void AutoPlaceStandardFleet()
     {
         Clear();
