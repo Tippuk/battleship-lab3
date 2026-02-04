@@ -58,6 +58,10 @@ public partial class Form1 : Form
 
         lblStatus.Text = "Вы хост. Ожидание клиента...";
         await _session.StartAsync();
+        btnHost.Enabled = false;
+        btnJoin.Enabled = false;
+        txtIp.Enabled = false;
+        numPort.Enabled = false;
         _gameState.StartPlacement();
         SetUiEnabled(true);
         lblStatus.Text = "Расставьте корабли и нажмите Старт";
@@ -73,6 +77,10 @@ public partial class Form1 : Form
 
         lblStatus.Text = "Подключение к хосту...";
         await _session.StartAsync();
+        btnHost.Enabled = false;
+        btnJoin.Enabled = false;
+        txtIp.Enabled = false;
+        numPort.Enabled = false;
         _gameState.StartPlacement();
         SetUiEnabled(true);
         lblStatus.Text = "Расставьте корабли и ждите начала игры";
