@@ -12,6 +12,7 @@ partial class Form1
     private Label lblStatus;
     private Button btnAutoPlace;
     private Button btnStartGame;
+    private Button btnRestart;
     private TextBox txtChatInput;
     private Button btnSendChat;
     private ListBox lstChat;
@@ -39,6 +40,7 @@ partial class Form1
         lblStatus = new Label();
         btnAutoPlace = new Button();
         btnStartGame = new Button();
+        btnRestart = new Button();
         txtChatInput = new TextBox();
         btnSendChat = new Button();
         lstChat = new ListBox();
@@ -142,6 +144,17 @@ partial class Form1
         btnStartGame.UseVisualStyleBackColor = true;
         btnStartGame.Click += btnStartGame_Click;
         // 
+        // btnRestart
+        // 
+        btnRestart.Location = new Point(636, 360);
+        btnRestart.Name = "btnRestart";
+        btnRestart.Size = new Size(100, 30);
+        btnRestart.TabIndex = 9;
+        btnRestart.Text = "Новый раунд";
+        btnRestart.UseVisualStyleBackColor = true;
+        btnRestart.Enabled = false;
+        btnRestart.Click += btnRestart_Click;
+        // 
         // txtChatInput
         // 
         txtChatInput.Location = new Point(12, 410);
@@ -196,6 +209,7 @@ partial class Form1
         Controls.Add(lstChat);
         Controls.Add(btnSendChat);
         Controls.Add(txtChatInput);
+        Controls.Add(btnRestart);
         Controls.Add(btnStartGame);
         Controls.Add(btnAutoPlace);
         Controls.Add(lblStatus);
