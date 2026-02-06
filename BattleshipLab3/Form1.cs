@@ -14,6 +14,7 @@ public partial class Form1 : Form
 
     private GameState? _gameState;
     private NetworkSession? _session;
+    private bool _roundFinished;
 
     public Form1()
     {
@@ -306,6 +307,8 @@ public partial class Form1 : Form
             _gameState.FinishGame();
             lblStatus.Text = "Поражение";
             enemyGrid.Enabled = false;
+            _roundFinished = true;
+            btnRestart.Enabled = true;
             _gameState.Logger.SaveToFile();
             return;
         }
@@ -385,6 +388,8 @@ public partial class Form1 : Form
             _gameState.FinishGame();
             enemyGrid.Enabled = false;
             lblStatus.Text = "Победа";
+            _roundFinished = true;
+            btnRestart.Enabled = true;
             _gameState.Logger.SaveToFile();
             return;
         }
@@ -450,5 +455,56 @@ public partial class Form1 : Form
     private void Form1_FormClosing(object? sender, FormClosingEventArgs e)
     {
         _session?.Stop();
+    }
+
+    private void btnRestart_Click(object? sender, EventArgs e)
+    {
+        if (_gameState == null)
+            return;
+
+        StartNewRound();
+    }
+
+    private void StartNewRound()
+    {
+        if (_gameState == null)
+            return;
+
+        bool isHost = _gameState.IsHost;
+
+
+        _gameState = new GameState(isHost);
+        _gameState.StartPlacement();
+
+        for (int x = 0; x < Board.Size; x++)
+        {
+            for (int y = 0; y < Board.Size; y++)
+            {
+                _enemyKnown[x, y] = CellState.Empty;
+                var enemyButton = _enemyButtons[x, y];
+                enemyButton.BackColor = Color.LightBlue;
+                enemyButton.Enabled = false;
+            }
+        }
+
+        for (int x = 0; x < Board.Size; x++)
+        {
+            for (int y = 0; y < Board.Size; y++)
+            {
+                var myButton = _playerButtons[x, y];
+                myButton.BackColor = Color.LightBlue;
+            }
+        }
+
+        btnAutoPlace.Enabled = true;
+        btnStartGame.Enabled = true;
+        enemyGrid.Enabled = false;
+
+        _roundFinished = false;
+        btnRestart.Enabled = false;
+
+        lblStatus.Text = isHost
+            ? "Расставьте корабли и нажмите Старт"
+            : "Расставьте корабли и ждите начала игры";
     }
 }
